@@ -1,0 +1,19 @@
+# Quick Test
+
+This repository includes a minimal quick test to verify that the packaged scripts and input data are working correctly.
+
+## Test script
+
+`code/2-Geographical location.py`
+
+## Purpose
+
+This script loads the packaged station CSV file and the U.S. boundary shapefile, then plots the geographic distribution of the study basins.
+
+## How to run
+
+From the repository root:
+
+```bash
+cd code
+python "2-Geographical location.py"
