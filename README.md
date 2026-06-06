@@ -116,7 +116,5 @@ python "7-point_density_heatmap.py" --csv "../data/csv/attr_density_with_target.
 - Only the CSV files and shapefile required for reading were retained in `data/`.
 - Output file names in several scripts were also converted to relative paths for easier reuse on another machine.
 
-## Suggested Citation
 
-If you upload this package to Zenodo, you can cite the final Zenodo record DOI in your manuscript or project documentation.
 
