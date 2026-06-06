@@ -146,7 +146,7 @@ def setup_legend(target_size):
 # ===============================================
 
 def plot_3d_axes(ax, data):
-    """绘制属性空间 3D 立方体图，带坐标"""
+    
 
     # 1. Force equal scaling for the 3D axes
     ax.set_box_aspect((1, 1, 1))
