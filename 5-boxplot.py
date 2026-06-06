@@ -20,9 +20,7 @@ plt.rcParams.update({
 sns.set_context("notebook", rc={"font.size": 18, "axes.titlesize": 18, "axes.labelsize": 18, "xtick.labelsize": 18, "ytick.labelsize": 18, "font.family": "Times New Roman"})
 
 def plot_median_difference(df_long, save_path=None):
-    """
-    绘制中位数差值随 N 变化的折线图
-    """
+
     # Compute the median for each (N, method) pair
     median_values = df_long.groupby(['N', 'method'])['KGE'].median().reset_index()
 
@@ -51,10 +49,7 @@ def plot_median_difference(df_long, save_path=None):
 
 
 def plot_kge_boxplots_comparison(df_long, save_path=None):
-    """
-    绘制不同 N 值下 geo 和 similarity 方法的 KGE 箱线图对比
-    将 N 值一分为二，分别绘制两个子图（2 行 × 1 列）
-    """
+
     df_small_n = df_long[df_long['N'] <= 100]
     df_large_n = df_long[df_long['N'] > 100]
 
@@ -106,17 +101,13 @@ def plot_kge_boxplots_comparison(df_long, save_path=None):
 
 
 def extract_n_from_filename(filename):
-    """
-    从文件名中提取 N 值（匹配第一个数字串）
-    """
+
     match = re.search(r'(\d+)', filename)
     return int(match.group(1)) if match else None
 
 
 def read_kge_with_method(files, method_label):
-    """
-    读取KGE CSV文件，添加方法标签（geo 或 similarity）和 N 值
-    """
+
     records = []
     for file in files:
         if not os.path.exists(file):
@@ -146,10 +137,7 @@ def read_kge_with_method(files, method_label):
 
 
 def compute_and_save_iqr(df_long, out_csv="kge_iqr_by_N_method.csv"):
-    """
-    基于长表 df_long（含列：N, method, KGE）计算每个 (N, method) 的
-    Q1, Q3, IQR，并保存为CSV。
-    """
+
     df = df_long.dropna(subset=['KGE']).copy()
 
     # Use groupby and quantile to compute the quartiles
@@ -174,9 +162,7 @@ def compute_and_save_iqr(df_long, out_csv="kge_iqr_by_N_method.csv"):
 
 
 def plot_combined_kge_and_iqr(df_long, df_iqr, save_path=None):
-    """
-    将箱线图和IQR折线图合并到同一张图里，使用双Y轴
-    """
+
     fig, ax1 = plt.subplots(figsize=(14, 8))
 
     sns.set(style="whitegrid")
@@ -211,9 +197,7 @@ def plot_combined_kge_and_iqr(df_long, df_iqr, save_path=None):
 
 
 def plot_q3_q1_difference(df_iqr, save_path=None):
-    """
-    绘制75分位数（Q3）和25分位数（Q1）差值的折线图
-    """
+
     # Compute the Q3-Q1 difference
     df_iqr['Q3_Q1_diff'] = df_iqr['Q3'] - df_iqr['Q1']
 
