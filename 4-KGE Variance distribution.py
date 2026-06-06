@@ -69,7 +69,7 @@ def merge_kge_and_station_data(kge_data, station_info, on="gauge_id"):
 # Standard-deviation calculation using positive values only
 # =============================
 def std_nonzero(values):
-    """仅使用 >0 的值计算无偏样本标准差；数量<=1 返回0"""
+    
     arr = np.asarray(values, dtype=float)
     arr = arr[arr > 0]
     n = arr.size
