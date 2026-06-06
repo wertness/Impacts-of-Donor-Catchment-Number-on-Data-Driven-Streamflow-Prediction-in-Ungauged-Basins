@@ -19,11 +19,7 @@ plt.rcParams.update({
 
 # Read and merge the KGE data files
 def read_kge_data(files):
-    """
-    读取多个KGE数据文件并将它们合并成一个DataFrame
-    :param files: KGE数据文件路径列表
-    :return: 合并后的DataFrame
-    """
+
     all_data = []
     for file in files:
         df = pd.read_csv(file)
@@ -34,11 +30,7 @@ def read_kge_data(files):
 
 # Data preprocessing: strip list brackets and convert values to numeric
 def preprocess_kge_data(df):
-    """
-    处理KGE数据，去掉方括号并转换为数值，负值替换为0
-    :param df: 原始数据DataFrame
-    :return: 预处理后的DataFrame
-    """
+
     df['KGE'] = df['KGE'].apply(
         lambda x: ast.literal_eval(x)[0] if isinstance(x, str) and x.startswith('[') else x
     )
@@ -59,13 +51,7 @@ def merge_kge_and_station_data(kge_data, station_info):
 
 # Read the boundary file and plot the map using Cartopy gridline labels
 def plot_kge_distribution_on_map(merged_data, boundary_file, output_file, title):
-    """
-    绘制KGE中位数的地理分布图
-    :param merged_data: 合并后的数据，包含gauge_id, KGE, gauge_lat, gauge_lon
-    :param boundary_file: 美国边界文件的路径（shp）
-    :param output_file: 输出文件路径
-    :param title: 图表标题
-    """
+
     # Load the boundary file
     us_boundary = gpd.read_file(boundary_file)
     # If the CRS is missing or not WGS84, assign/convert it to EPSG:4326
