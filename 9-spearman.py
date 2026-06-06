@@ -39,7 +39,7 @@ correlation_df = pd.DataFrame(index=methods.keys(), columns=attributes, dtype=fl
 annot_matrix = pd.DataFrame(index=methods.keys(), columns=attributes, dtype=object)
 
 # Print the significance-level legend
-print("=== 显著性等级 (p-value, Spearman) ===")
+print("===  (p-value, Spearman) ===")
 print("  *     : p < 0.1")
 print("  **    : p < 0.05")
 print("  ***   : p < 0.01\n")
