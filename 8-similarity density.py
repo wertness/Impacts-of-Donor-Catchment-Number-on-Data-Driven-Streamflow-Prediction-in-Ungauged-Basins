@@ -1,13 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-CSV 点 → 6维属性 KDE 权重 × 点上空间核密度（无栅格热力图）
-→ 把 kde_value 写回每个点 → 与 max_similarity_n 做 Spearman 相关
-→ 画两张箱线图（0–50 与 50–600），并在图左上角标注 Spearman ρ、p、n
 
-固定 6 个属性列：
-    ["area_x","aridity_fao_pm","kar_pc_sse_x","slp_dg_sav_x","for_pc_sse","p_mean"]
-"""
 
 from __future__ import annotations
 import argparse
@@ -78,12 +71,7 @@ def auto_pick_target_col(df: pd.DataFrame, prefer: str | None = None) -> str:
 def kde_attr_weights(df: pd.DataFrame, cols: List[str],
                      zscore: bool=True, bw: str|float="scott",
                      out_norm: str="minmax") -> np.ndarray:
-    """
-    对给定属性列做 gaussian_kde，返回每个点的属性空间密度（作为权重）。
-    - zscore：对每个属性做标准化
-    - bw：'scott'/'silverman' 或数值（传给 scipy 的 bw_method）
-    - out_norm：'minmax' / 'zscore' / 'none'
-    """
+
     X = df[cols].apply(pd.to_numeric, errors="coerce").to_numpy(dtype=float)
     if zscore:
         mu = X.mean(axis=0, keepdims=True)
@@ -128,15 +116,7 @@ def pointwise_spatial_kde(
     leafsize: int = 40,
     batch_divisor: int = 20,
 ) -> np.ndarray:
-    """
-    在每个点上计算空间核密度：
-    kde_i = sum_j w_j * K( dist(x_i,x_j) / h )
-    - 'circle'：K(u) = 1(u<=1)
-    - 'gaussian'：K(u) = exp(-0.5*u^2)  (u = d / h)
-    - 'combo'：K = 0.5*gaussian + 0.5*circle
-    normalize=True 时再除以 sum_j K(...)（得到局部加权均值，数值更稳）
-    最后做一次 [0,1] 的 minmax 归一化。
-    """
+
     n = xy.shape[0]
     w = np.ones(n, dtype=float) if weights is None else np.asarray(weights, dtype=float)
     tree = cKDTree(xy, leafsize=leafsize)
@@ -186,12 +166,7 @@ def pointwise_spatial_kde(
 def plot_kde_boxplots(df: pd.DataFrame, target_col: str, out_dir: str, base_name: str,
                       ymax: float | None = 1.0, min_count_per_box: int = 2,
                       widths: float = 0.35):
-    """
-    画两张图：
-      - 图1：x ∈ [0,50] 的箱线图（逐整数分箱），标题 density_boxplot(0-50)
-      - 图2：x ∈ (50,600] 的箱线图（逐整数分箱），标题 density_boxplot(50-600)
-    保存到 out_dir。并在**左上角**标注该区间 Spearman ρ、p、n。
-    """
+
     xraw = pd.to_numeric(df[target_col], errors="coerce")
     y = pd.to_numeric(df["kde_value"], errors="coerce")
     ok = xraw.notna() & y.notna()
